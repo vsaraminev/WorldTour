@@ -18,7 +18,6 @@ class Profile extends Component {
     const id = this.props.match.params.id;
 
     const result = await this.UserService.userDetails(id);
-    //console.log(result);
 
     if (result.user) {
       this.setState({

@@ -59,11 +59,9 @@ class TourDetails extends Component {
 
     async handleClickDelete() {
         const id = this.state.tour._id;
-        // const creatorId = this.state.post.createdBy._id;
-        // console.log(creatorId)
+        const creatorId = this.state.tour.createdBy;
 
-        const body = await this.TourService.remove({ id });
-
+        const body = await this.TourService.remove({ id, creatorId });
 
         if (this.props.isAdmin === true) {
             if (body.error) {
@@ -88,6 +86,9 @@ class TourDetails extends Component {
     render() {
         //let redirectLink = `/user/details/${this.state.createdBy._id}`;
         let toRender = null;
+        let isAdmin = localStorage.getItem('isAdmin') === "true"
+        let isCreator = this.state.createdBy === this.props.userId;
+
         if (!this.state.redirect) {
             let { title, country, description, price, image, _id } = this.state.tour;
 
@@ -107,17 +108,19 @@ class TourDetails extends Component {
                                     </blockquote>
                                 </div>
                             </div>
+                            <div className="pull-right">
+                                {(isCreator || isAdmin) && <Link to={'/tour/edit/' + _id} className="btn btn-warning">Edit</Link>}
+                                {isAdmin && <button type="button" onClick={this.handleClickDelete} className="btn btn-danger" >Delete</button>}
+                            </div>
                         </div>
                         <div className="col-md-4">
                             <p>Title: {title}</p>
                             <p>Country: {country}</p>
                             <p>Description: {description}</p>
-                            <p>Price: {price}</p>                            
+                            <p>Price: {price}</p>
                         </div>
-                        
                     </div>
                 </div>
-
             )
         }
 

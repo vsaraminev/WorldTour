@@ -6,7 +6,7 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isAdmin: '',
+            isAuth: '',
             tours: [],
             tourId: undefined,
         }
@@ -16,7 +16,7 @@ class Home extends Component {
     }
 
     async componentWillMount() {
-        const isAdmin = (this.props.isAdmin);
+        const isAuth = this.props.isLoggedIn;
 
         let data = await this.TourService.all();
         if (data.tours) {
@@ -30,7 +30,7 @@ class Home extends Component {
             this.setState({
                 message: '',
                 tours: orderedTours,
-                isAdmin: isAdmin,
+                isAuth: isAuth,
                 hasFetched: true
             })
         }
@@ -48,7 +48,7 @@ class Home extends Component {
                 <div className="row space-top">
                     <h1>Welcome to World Tour !</h1>
                 </div>
-                <TourList isAdmin={this.state.isAdmin} tours={this.state.tours} />
+                <TourList isAuth={this.state.isAuth} tours={this.state.tours} />
             </div>
         )
     }

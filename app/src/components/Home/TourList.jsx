@@ -14,7 +14,7 @@ class TourList extends Component {
                             title={t.title}
                             country={t.country}
                             price={t.price}
-                            isAdmin={this.props.isAdmin}
+                            isAuth={this.props.isAuth}
                         />
                     ))
                 }
