@@ -84,7 +84,6 @@ class TourDetails extends Component {
     }
 
     render() {
-        //let redirectLink = `/user/details/${this.state.createdBy._id}`;
         let toRender = null;
         let isAdmin = localStorage.getItem('isAdmin') === "true"
         let isCreator = this.state.createdBy === this.props.userId;
@@ -93,34 +92,31 @@ class TourDetails extends Component {
             let { title, country, description, price, image, _id } = this.state.tour;
 
             toRender = (
-                <div className="container">
+                <div>
                     <div className="row space-top">
-                        <div className="col-md-12">
-                            <h1>Tour Details</h1>
-                        </div>
-                    </div>
-                    <div className="row space-top">
-                        <div className="col-md-4">
+                        <div className="col-md-6">
                             <div className="card text-white bg-primary">
                                 <div className="card-body">
                                     <blockquote className="card-blockquote">
-                                        <img alt={image} src={image} />
+                                        <img className="details" src={image} alt={image} />
                                     </blockquote>
                                 </div>
                             </div>
-                            <div className="pull-right">
-                                {(isCreator || isAdmin) && <Link to={'/tour/edit/' + _id} className="btn btn-warning">Edit</Link>}
-                                {isAdmin && <button type="button" onClick={this.handleClickDelete} className="btn btn-danger" >Delete</button>}
+                        </div>
+                        <div className="col-md-6">
+                            <p className="details"><b>Title:</b> {title}</p>
+                            <hr />
+                            <p className="details"><b>Country:</b> {country}</p>
+                            <p className="details"><b>Description:</b> {description}</p>
+                            <p className="details"><b>Price:</b> {price}</p>
+                            <hr />
+                            <div className="btns">
+                                {(isCreator || isAdmin) && <Link to={'/tour/edit/' + _id} ><button type="button" className="btn btn-warning left">Edit photo</button></Link>}
+                                {isAdmin && <a><button type="button" onClick={this.handleClickDelete} className="btn btn-danger right">Delete photo</button></a>}
                             </div>
                         </div>
-                        <div className="col-md-4">
-                            <p>Title: {title}</p>
-                            <p>Country: {country}</p>
-                            <p>Description: {description}</p>
-                            <p>Price: {price}</p>
-                        </div>
                     </div>
-                </div>
+                </div>                
             )
         }
 

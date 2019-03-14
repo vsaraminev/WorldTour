@@ -95,9 +95,11 @@ class App extends Component {
                   (!localStorage.hasOwnProperty('ujwt')) ? (<Redirect to="/" />
                   ) : (<Create {...props} {...this.state} />)}
               />
-              <Route path='/tour/details/:id' render={(props) => <TourDetails
-                {...props}
-                {...this.state} />} />
+              <Route path='/tour/details/:id'
+                render={(props) =>
+                  (!localStorage.hasOwnProperty('ujwt')
+                  ) ? (<Redirect to="/" />
+                    ) : <TourDetails {...props} {...this.state} />} />
               <Route exact path='/tour/edit/:id'
                 render={(props) =>
                   (!localStorage.hasOwnProperty('ujwt')

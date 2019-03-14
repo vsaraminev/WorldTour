@@ -15,6 +15,10 @@ a.nav-link.active {
     margin-top: 2em;
 }
 
+.space-left {
+  margin-left: 2em;
+}
+
 .navbar span {
     color: #bbbbbb;
 }
@@ -30,3 +34,39 @@ a.nav-link.active {
 .selected {
 	background: #666666;
 }
+
+div.btns > a > button.left {
+    font-size: 20px;
+    float: left;
+    margin: 5px;
+  }
+  
+  div.btns > a > button.right {
+    font-size: 20px;
+    float: left;
+    margin: 5px;
+  }
+  div.details {
+    float: left;
+  }
+
+  .card-blockquote>img.list {
+    width: 100%;
+    height: 200px;
+  }
+  .card-blockquote>img.details {
+    width: 100%;
+  }
+  .card {
+    margin-bottom: 1em;
+  }
+  
+  div.col-md-4 {
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+
+  div.col-md-6 > p {
+    font-size: 20px;
+    text-align: left;
+  }

@@ -25,7 +25,6 @@ class Profile extends Component {
         tours: result.tours
       })
     }
-    console.log(this.state.tours);
   }
 
   handleClick(event) {
@@ -42,27 +41,27 @@ class Profile extends Component {
     const { username, email, firstName, lastName, avatar } = this.state.user;
 
     return (
-      <div className="container">
-        <div className="row space-top">
-            <ProfileCard
-              username={username}
-              firstName={firstName}
-              lastName={lastName}
-              email={email}
-              avatar={avatar}
-            />
-            {toursValues.length > 0 ? (toursValues.map((t, i) => (
-              <TourCard
-                key={t._id}
-                id={t._id}
-                image={t.image}
-                title={t.title}
-                country={t.country}
-                price={t.price}
-                isAdmin={this.props.isAdmin}
-              />))
-            ) : (<h4>No tours added!</h4>)}
-        </div>
+      <div>
+          <ProfileCard
+            username={username}
+            firstName={firstName}
+            lastName={lastName}
+            email={email}
+            avatar={avatar}
+          />
+        <h2>My tours</h2>
+        <hr/>
+          {toursValues.length > 0 ? (toursValues.map((t, i) => (
+            <TourCard
+              key={t._id}
+              id={t._id}
+              image={t.image}
+              title={t.title}
+              country={t.country}
+              price={t.price}
+              isAdmin={this.props.isAdmin}
+            />))
+          ) : (<h4>No tours added!</h4>)}
       </div>
     );
   }

@@ -73,7 +73,7 @@ class Register extends Component {
         </div>
         <form onSubmit={this.handleSubmit}>
           <div className="row space-top">
-            <div className="col-md-4">
+            <div className="col-md-5">
               <Input
                 name='username'
                 value={this.state.username}
@@ -94,6 +94,8 @@ class Register extends Component {
                 placeholder="Your last name here..."
                 label='Last Name'
               />
+            </div>
+            <div className="col-md-5">
               <Input
                 name='email'
                 value={this.state.email}
@@ -116,9 +118,9 @@ class Register extends Component {
                 placeholder="Your Avatar here..."
                 label='Avatar'
               />
-              <input type="submit" className="btn btn-primary" value="Register" />
             </div>
           </div>
+          <input type="submit" className="btn btn-primary" value="Register" />
         </form>
       </div>
     )
