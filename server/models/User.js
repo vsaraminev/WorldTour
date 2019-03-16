@@ -12,7 +12,7 @@ let userSchema = new mongoose.Schema({
   lastName: {type: mongoose.Schema.Types.String, required: REQUIRED_VALIDATION_MESSAGE},
   avatar: {type: mongoose.Schema.Types.String, default: 'https://cdn.patchcdn.com/assets/layout/contribute/user-default.png'},
   roles: [{type: mongoose.Schema.Types.String, default: 'User'}],
-  posts: [{type: mongoose.Schema.Types.ObjectId, ref: 'Post'}],
+  tours: [{type: mongoose.Schema.Types.ObjectId, ref: 'Tour'}],
 })
 
 userSchema.method({

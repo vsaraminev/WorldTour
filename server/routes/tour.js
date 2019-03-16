@@ -1,14 +1,12 @@
 const express = require('express');
 const authCheck = require('../config/auth-check');
-const Book = require('../models/Book');
 const Tour = require('../models/Tour');
-const Post = require('../models/Post');
 const User = require('../models/User');
-const Category = require('../models/Category');
 
 const router = new express.Router()
 
 function validatePostCreateForm(payload) {
+    console.log(payload);
     const errors = {}
     let isFormValid = true
     let message = ''
@@ -16,7 +14,7 @@ function validatePostCreateForm(payload) {
 
     if (!payload || typeof payload.title !== 'string' || payload.title.length < 3 || payload.title.length > 50) {
         isFormValid = false
-        errors.title = 'Post title must be at least 3 symbols and less than 50 symbols.'
+        errors.title = 'Tour title must be at least 3 symbols and less than 50 symbols.'
     }
 
     if (!payload || typeof payload.country !== 'string' || payload.country.length < 3 || payload.country.length > 50) {
@@ -24,10 +22,10 @@ function validatePostCreateForm(payload) {
         errors.country = 'Country must be at least 3 symbols and less than 50 symbols.'
     }
 
-    if (!payload || typeof payload.description !== 'string' || payload.description.length < 5 || payload.description.length > 120) {
-        isFormValid = false
-        errors.description = 'Description must be at least 5 symbols and less than 120 symbols.'
-    }
+    // if (!payload || typeof payload.description !== 'string' || payload.description.length < 5 || payload.description.length > 120) {
+    //     isFormValid = false
+    //     errors.description = 'Description must be at least 5 symbols and less than 120 symbols.'
+    // }
 
     if (!payload || typeof payload.image !== 'string' || !(payload.image.startsWith('https://') || payload.image.startsWith('http://')) || payload.image.length < 14) {
         isFormValid = false
@@ -47,7 +45,7 @@ function validatePostCreateForm(payload) {
 
 router.post('/create', authCheck, async (req, res) => {
     const tourObj = req.body
-    if (req.user.roles.indexOf('Admin') > -1) {
+    if (req.user.roles.indexOf('User') > -1) {
         const validationResult = validatePostCreateForm(tourObj)
         var user = req.user;
         if (!user) {
@@ -74,6 +72,8 @@ router.post('/create', authCheck, async (req, res) => {
                     message: 'Tour created successfully.',
                     data: createdTour
                 })
+                user.tours.push(createdTour._id);
+                await user.save();
             })
             .catch((err) => {
                 console.log(err)
@@ -96,12 +96,10 @@ router.post('/create', authCheck, async (req, res) => {
 
 router.post('/edit/:id', authCheck, async (req, res) => {
     if (req.user.roles.indexOf('User') > -1) {
-        const postId = req.params.id;
-        const postBody = req.body;
-        let postObj = postBody;
-        let category = await Category.findOne({ name: postObj.category });
-        postObj.category = category.name;
-        const validationResult = validatePostCreateForm(postObj)
+        const tourId = req.params.id;
+        const tourBody = req.body;
+        let tourObj = tourBody;
+        const validationResult = validatePostCreateForm(tourObj)
         if (!validationResult.success) {
             return res.status(200).json({
                 success: false,
@@ -110,37 +108,28 @@ router.post('/edit/:id', authCheck, async (req, res) => {
             })
         }
         try {
-            let existingPost = await Post.findById(postId)
-            if (existingPost && existingPost.category !== postObj.category) {
-                let prevCategory = await Category.findOne({ name: existingPost.category })
-                prevCategory.posts = prevCategory.posts.filter(p => p !== existingPost._id)
-                await prevCategory.save();
+            let existingTour = await Tour.findById(tourId)
 
-                let currCategory = await Category.findOne({ name: postObj.category })
-                prevCategory.posts = prevCategory.posts.push(existingPost._id)
-                await currCategory.save();
-            }
+            existingTour.title = tourObj.title
+            existingTour.country = tourObj.country
+            existingTour.image = tourObj.image
+            existingTour.description = tourObj.description
+            existingTour.price = tourObj.price
 
-
-            existingPost.title = postObj.title
-            existingPost.content = postObj.content
-            existingPost.imageUrl = postObj.imageUrl
-            existingPost.category = postObj.category
-
-            existingPost
+            existingTour
                 .save()
-                .then(editedPost => {
+                .then(editedTour => {
                     res.status(200).json({
                         success: true,
-                        message: 'Post edited successfully.',
-                        data: editedPost
+                        message: 'Tour edited successfully.',
+                        data: editedTour
                     })
                 })
                 .catch((err) => {
                     console.log(err)
                     let message = 'Something went wrong :( Check the form for errors.'
                     if (err.code === 11000) {
-                        message = 'Post with the given name already exists.'
+                        message = 'Tour with the given name already exists.'
                     }
                     return res.status(200).json({
                         success: false,
@@ -179,29 +168,11 @@ router.get('/', (req, res) => {
         })
 })
 
-router.get('/latest', (req, res) => {
-    Post
-        .find()
-        .then(posts => {
-            let latestPost = posts.sort((a, b) => {
-                return a.createdOn < b.createdOn
-            })[0]
-            res.status(200).json(latestPost)
-        })
-        .catch((err) => {
-            console.log(err)
-            const message = 'Something went wrong :('
-            return res.status(200).json({
-                success: false,
-                message: message
-            })
-        })
-})
-
 router.get('/details/:id', (req, res) => {
     const id = req.params.id
     Tour
         .findById(id)
+        .populate('User')
         .then(tour => {
             if (!tour) {
                 const message = 'Tour not found.'
@@ -215,6 +186,7 @@ router.get('/details/:id', (req, res) => {
                 success: true,
                 message: 'Tour details info.',
                 tour: tour,
+                createdBy: tour.createdBy,
                 //starsCount: tour.stars.length,
                 stars: tour.stars,
             })
@@ -229,155 +201,31 @@ router.get('/details/:id', (req, res) => {
         })
 })
 
-// router.post('/review/:id', authCheck, (req, res) => {
-//   const id = req.params.id
-//   const review = req.body.review
-//   const username = req.user.username
-
-//   if (review.length < 4) {
-//     const message = 'Review must be at least 4 characters long.'
-//     return res.status(200).json({
-//       success: false,
-//       message: message
-//     })
-//   }
-
-//   Book
-//     .findById(id)
-//     .then(book => {
-//       if (!book) {
-//         return res.status(200).json({
-//           success: false,
-//           message: 'Product not found.'
-//         })
-//       }
-
-//       let reviewObj = {
-//         review,
-//         createdBy: username
-//       }
-
-//       let reviews = book.reviews
-//       reviews.push(reviewObj)
-//       book.reviews = reviews
-//       book
-//         .save()
-//         .then((book) => {
-//           res.status(200).json({
-//             success: true,
-//             message: 'Review added successfully.',
-//             data: book
-//           })
-//         })
-//         .catch((err) => {
-//           console.log(err)
-//           const message = 'Something went wrong :( Check the form for errors.'
-//           return res.status(200).json({
-//             success: false,
-//             message: message
-//           })
-//         })
-//     })
-//     .catch((err) => {
-//       console.log(err)
-//       const message = 'Something went wrong :( Check the form for errors.'
-//       return res.status(200).json({
-//         success: false,
-//         message: message
-//       })
-//     })
-// })
-
-router.post('/star/:id', authCheck, async (req, res) => {
-    const id = req.params.id
-    const userId = req.user.id
-
-    Post
-        .findById(id)
-        .then(post => {
-            if (!post) {
-                const message = 'Post not found.'
-                return res.status(200).json({
-                    success: false,
-                    message: message
-                })
-            }
-
-            let stars = post.stars;
-            let message = '';
-            if (stars.includes(userId)) {
-                const index = stars.indexOf(req.user.id)
-                stars.splice(index, 1)
-                message = 'Post unstar successfully.'
-            } else {
-                stars.push(userId)
-                message = 'Post recieved star successfully.'
-            }
-            post.stars = stars
-            post
-                .save()
-                .then(async (likedPost) => {
-                    let user = await User.findById(likedPost.createdBy._id)
-                    res.status(200).json({
-                        success: true,
-                        message: message,
-                        post: likedPost,
-                        createdBy: user,
-                        starsCount: likedPost.stars.length,
-                        stars: likedPost.stars,
-                    })
-                })
-                .catch((err) => {
-                    console.log(err)
-                    const message = 'Something went wrong :('
-                    return res.status(200).json({
-                        success: false,
-                        message: message
-                    })
-                })
-        })
-        .catch((err) => {
-            console.log(err)
-            const message = 'Something went wrong :('
-            return res.status(200).json({
-                success: false,
-                message: message
-            })
-        })
-})
-
 router.delete('/remove/:id', authCheck, async (req, res) => {
     const id = req.params.id;
     const creator = req.body.creatorId;
-    console.log(req.body)
     var user = await User.findById(creator);
     if (req.user.roles.indexOf('User') > -1 || req.user.roles.indexOf('Admin') > -1) {
-        Post
+        Tour
             .findById(id)
-            .then(async (post) => {
-                let postTitle = post.title;
+            .then(async (tour) => {
+                let tourTitle = tour.title;
                 try {
-                    let category = await Category.findOne({ name: post.category });
-                    let filtered = category.posts.filter(p => p.toString() !== id.toString());
-                    category.posts = filtered
-                    await category.save();
-                    let filteredPosts = user.posts.filter(p => p.toString() !== id.toString());
-                    user.posts = filteredPosts
+                    let filteredTours = user.tours.filter(t => t.toString() !== id.toString());
+                    user.tours = filteredTours
                     await user.save();
-                    //remove from categories and users!!!
-
                 } catch (error) {
                     console.log(error)
                 }
 
                 let creatorPossible = req.user._id;
-                if (creatorPossible.toString() === post.createdBy.toString() || req.user.roles.includes('Admin')) {
-                    Post
+                if (creatorPossible.toString() === tour.createdBy.toString() || req.user.roles.includes('Admin')) {
+                    Tour
                         .findByIdAndDelete(id)
                         .then(() => {
                             return res.status(200).json({
                                 success: true,
-                                message: `Post "${postTitle}" deleted successfully!`
+                                message: `Tour "${tourTitle}" deleted successfully!`
                             })
                         })
                         .catch((err) => {
