@@ -1,6 +1,7 @@
-const express = require('express')
-const authCheck = require('../config/auth-check')
-const User = require('../models/User')
+const express = require('express');
+const authCheck = require('../config/auth-check');
+const User = require('../models/User');
+const Tour = require('../models/Tour');
 
 const router = new express.Router()
 
@@ -59,6 +60,41 @@ router.get('/all', async (req, res) => {
         message: message
       })
     })
+})
+
+router.delete('/delete/:id', authCheck, async (req, res) => {
+  try {
+    const id = req.params.id
+    const userToDelete = await User
+      .findById(id)
+
+    const tours = await Tour.find({ createdBy: userToDelete._id })
+
+    const deleted = await Tour.deleteMany({ createdBy: userToDelete._id })
+
+    if (deleted) {
+      let deletedUser = await User.findByIdAndDelete(id);
+      return res.status(200).json({
+        success: true,
+        message: 'User was deleted successfully!',
+        user: userToDelete,
+      })
+    } else {
+      return res.status(200).json({
+        success: false,
+        message: 'Error!',
+      })
+    }
+
+
+  } catch (err) {
+    console.log(err)
+    const message = 'Something went wrong :( Check the form for errors.'
+    return res.status(200).json({
+      success: false,
+      message: message
+    })
+  }
 })
 
 module.exports = router

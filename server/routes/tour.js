@@ -5,7 +5,7 @@ const User = require('../models/User');
 
 const router = new express.Router()
 
-function validatePostCreateForm(payload) {
+function validateTourCreateForm(payload) {
     console.log(payload);
     const errors = {}
     let isFormValid = true
@@ -22,10 +22,10 @@ function validatePostCreateForm(payload) {
         errors.country = 'Country must be at least 3 symbols and less than 50 symbols.'
     }
 
-    // if (!payload || typeof payload.description !== 'string' || payload.description.length < 5 || payload.description.length > 120) {
-    //     isFormValid = false
-    //     errors.description = 'Description must be at least 5 symbols and less than 120 symbols.'
-    // }
+    if (!payload || typeof payload.description !== 'string' || payload.description.length < 5 || payload.description.length > 5000) {
+        isFormValid = false
+        errors.description = 'Description must be at least 5 symbols and less than 120 symbols.'
+    }
 
     if (!payload || typeof payload.image !== 'string' || !(payload.image.startsWith('https://') || payload.image.startsWith('http://')) || payload.image.length < 14) {
         isFormValid = false
@@ -46,7 +46,7 @@ function validatePostCreateForm(payload) {
 router.post('/create', authCheck, async (req, res) => {
     const tourObj = req.body
     if (req.user.roles.indexOf('User') > -1) {
-        const validationResult = validatePostCreateForm(tourObj)
+        const validationResult = validateTourCreateForm(tourObj)
         var user = req.user;
         if (!user) {
             return res.status(200).json({
@@ -79,7 +79,7 @@ router.post('/create', authCheck, async (req, res) => {
                 console.log(err)
                 let message = 'Something went wrong :( Check the form for errors.'
                 if (err.code === 11000) {
-                    message = 'Post with the given name already exists.'
+                    message = 'Tour with the given name already exists.'
                 }
                 return res.status(200).json({
                     success: false,
@@ -99,7 +99,7 @@ router.post('/edit/:id', authCheck, async (req, res) => {
         const tourId = req.params.id;
         const tourBody = req.body;
         let tourObj = tourBody;
-        const validationResult = validatePostCreateForm(tourObj)
+        const validationResult = validateTourCreateForm(tourObj)
         if (!validationResult.success) {
             return res.status(200).json({
                 success: false,
@@ -114,7 +114,7 @@ router.post('/edit/:id', authCheck, async (req, res) => {
             existingTour.country = tourObj.country
             existingTour.image = tourObj.image
             existingTour.description = tourObj.description
-            existingTour.price = tourObj.price
+            existingTour.cost = tourObj.cost
 
             existingTour
                 .save()
@@ -187,8 +187,6 @@ router.get('/details/:id', (req, res) => {
                 message: 'Tour details info.',
                 tour: tour,
                 createdBy: tour.createdBy,
-                //starsCount: tour.stars.length,
-                stars: tour.stars,
             })
         })
         .catch((err) => {
