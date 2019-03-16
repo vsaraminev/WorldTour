@@ -13,7 +13,7 @@ class EditTour extends Component {
                 title: '',
                 country: '',
                 description: '',
-                price: '',
+                cost: '',
                 image: ''
             },
             redirect: false,
@@ -37,7 +37,7 @@ class EditTour extends Component {
                     title: tour.title,
                     country: tour.country,
                     description: tour.description,
-                    price: Number(tour.price),
+                    cost: Number(tour.cost),
                     image: tour.image
                 },
                 message: ''
@@ -49,7 +49,6 @@ class EditTour extends Component {
 
     async handleSubmit(event) {
         event.preventDefault();
-        console.log(this.state.tour);
         if (!this.isTourValid(this.state.tour)) {
             return;
         }
@@ -124,7 +123,7 @@ class EditTour extends Component {
     render() {
         const isAuth = localStorage.hasOwnProperty("ujwt")
         const redirectLink = `/tour/details/${this.state.editedTourId}`
-        let { title, country, image, description, price } = this.state.tour;
+        let { title, country, image, description, cost } = this.state.tour;
 
         let renderIfAuth = (
             <div className="container">
@@ -164,11 +163,11 @@ class EditTour extends Component {
                                 label='Image Url'
                             />
                             <Input
-                                name='price'
+                                name='cost'
                                 type='Number'
-                                value={price}
+                                value={cost}
                                 onchange={this.handleChange}
-                                label='Price'
+                                label='Cost'
                             />
                         </div>
                     </div>

@@ -35,7 +35,6 @@ class TourDetails extends Component {
                 liked: result.stars
             })
         }
-
     }
 
     async handleClickStar(event) {
@@ -89,7 +88,7 @@ class TourDetails extends Component {
         let isCreator = this.state.createdBy === this.props.userId;
 
         if (!this.state.redirect) {
-            let { title, country, description, price, image, _id } = this.state.tour;
+            let { title, country, description, cost, image, _id } = this.state.tour;
 
             toRender = (
                 <div>
@@ -108,7 +107,7 @@ class TourDetails extends Component {
                             <hr />
                             <p className="details"><b>Country:</b> {country}</p>
                             <p className="details"><b>Description:</b> {description}</p>
-                            <p className="details"><b>Price:</b> {price}</p>
+                            <p className="details"><b>Cost:</b> ${cost}</p>
                             <hr />
                             <div className="btns">
                                 {(isCreator || isAdmin) && <Link to={'/tour/edit/' + _id} ><button type="button" className="btn btn-warning left">Edit tour</button></Link>}

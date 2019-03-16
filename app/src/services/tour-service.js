@@ -1,4 +1,4 @@
-import requester from '../data-fetch/requester';
+import requester from '../api/requester';
 
 class TourService {
 

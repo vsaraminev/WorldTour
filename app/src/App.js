@@ -11,7 +11,7 @@ import Create from './components/Create/Create';
 import EditTour from './components/EditTour/EditTour'
 import TourDetails from './components/TourDetails/TourDetails'; 
 import Profile from './components/Profile/Profile';
-import AllUsers from './components/AllUsers/AllUsers';
+import AllUsers from './components/Users/AllUsers';
 import NotFound from './components/common/NotFound/NotFound';
 
 class App extends Component {
