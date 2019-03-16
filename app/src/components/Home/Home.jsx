@@ -45,8 +45,9 @@ class Home extends Component {
     render() {
         return (
             <div className="container">
-                <div className="row space-top">
-                    <h1>Welcome to World Tour !</h1>
+                <div className="space-top text">
+                    <h2>Welcome to World Tour !</h2>
+                    {!this.state.isAuth && <p className='lead text-muted'>World famous tours is now just a few clicks away. Register now and view details.</p>}
                 </div>
                 <TourList isAuth={this.state.isAuth} tours={this.state.tours} />
             </div>

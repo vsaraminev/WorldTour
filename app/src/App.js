@@ -1,18 +1,18 @@
-import React, { Component, Suspense, lazy } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import PostService from './services/post-service'
 
+import Auth from './Auth';
 import Header from './components/common/Header/Header';
 import Footer from './components/common/Footer/Footer'
 import Home from './components/Home/Home';
+import Create from './components/Create/Create';
 import EditTour from './components/EditTour/EditTour'
+import TourDetails from './components/TourDetails/TourDetails'; 
 import Profile from './components/Profile/Profile';
 import AllUsers from './components/AllUsers/AllUsers';
-const Create = lazy(() => import('./components/Create/Create'));
-const TourDetails = lazy(() => import('./components/TourDetails/TourDetails'));
-const Auth = lazy(() => import('./Auth'));
+import NotFound from './components/common/NotFound/NotFound';
 
 class App extends Component {
   constructor(props) {
@@ -26,7 +26,6 @@ class App extends Component {
       message: ''
     }
 
-    this.PostService = new PostService();
     this.loginUser = this.loginUser.bind(this);
     this.logout = this.logout.bind(this);
   }
@@ -122,6 +121,7 @@ class App extends Component {
                   ) ? (<Redirect to="/" />
                     ) : (<AllUsers {...props} {...this.state} />)}
               />
+              <Route render={() => <NotFound/>}/>
             </Switch>
             <ToastContainer
               position="top-right"

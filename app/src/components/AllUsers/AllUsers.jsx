@@ -26,9 +26,10 @@ class AllUsersAdmin extends Component {
 
     render() {
         return (
-            <div>
-                <h1 className='text-center'>All Users</h1>
-                <hr className="my-4" />
+            <div className='allUsers'>
+                <br/>
+                <h1 className='text'>All Users</h1>
+                <br/>
                 <UserList users={this.state.users} />
             </div>
         );

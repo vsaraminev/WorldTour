@@ -111,8 +111,8 @@ class TourDetails extends Component {
                             <p className="details"><b>Price:</b> {price}</p>
                             <hr />
                             <div className="btns">
-                                {(isCreator || isAdmin) && <Link to={'/tour/edit/' + _id} ><button type="button" className="btn btn-warning left">Edit photo</button></Link>}
-                                {isAdmin && <a><button type="button" onClick={this.handleClickDelete} className="btn btn-danger right">Delete photo</button></a>}
+                                {(isCreator || isAdmin) && <Link to={'/tour/edit/' + _id} ><button type="button" className="btn btn-warning left">Edit tour</button></Link>}
+                                {isAdmin && <a><button type="button" onClick={this.handleClickDelete} className="btn btn-danger right">Delete tour</button></a>}
                             </div>
                         </div>
                     </div>

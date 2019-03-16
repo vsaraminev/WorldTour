@@ -70,3 +70,11 @@ div.btns > a > button.left {
     font-size: 20px;
     text-align: left;
   }
+  .text {
+    text-align: center;
+  }
+
+  .allUsers {
+  margin-left: 2em;
+  margin-right: 2em;
+  }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function TourCard({ id, title, country, price, image, isAuth }) {
+export default function TourCard({ id, country, image, isAuth }) {
     return (
         <div className="col-md-4 photo">
             <div className="card text-white bg-primary">

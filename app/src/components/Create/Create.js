@@ -53,7 +53,6 @@ class Create extends Component {
       toast.error(body.error);
     } else {
       toast.success(body.message);
-      console.log(this.state);
       this.setState({
         redirect: true,
         createdTourId: body.data._id

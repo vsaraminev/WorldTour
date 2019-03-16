@@ -15,11 +15,13 @@ export default function ProfileCard({ username, firstName, lastName, avatar, ema
                     </div>
                 </div>
                 <div className="col-md-6">
-                    <p className="details"><b>Title:</b> {username}</p>
+                    <p className="details"><b>Username:</b> {username}</p>
                     <hr />
-                    <p className="details"><b>Country:</b> {firstName}</p>
-                    <p className="details"><b>Description:</b> {lastName}</p>
-                    <p className="details"><b>Price:</b> {email}</p>
+                    <p className="details"><b>First Name:</b> {firstName}</p>
+                    <hr />
+                    <p className="details"><b>Last Name:</b> {lastName}</p>
+                    <hr />
+                    <p className="details"><b>Email:</b> {email}</p>
                     <hr />
                 </div>
             </div>

@@ -39,9 +39,9 @@ class Profile extends Component {
       return v;
     })
     const { username, email, firstName, lastName, avatar } = this.state.user;
-
+    const isAuth = this.props.isLoggedIn;
     return (
-      <div>
+      <div className='text'>
           <ProfileCard
             username={username}
             firstName={firstName}
@@ -59,9 +59,10 @@ class Profile extends Component {
               title={t.title}
               country={t.country}
               price={t.price}
+              isAuth={isAuth}
               isAdmin={this.props.isAdmin}
             />))
-          ) : (<h4>No tours added!</h4>)}
+          ) : (<h4>No tours created!</h4>)}
       </div>
     );
   }
