@@ -9,6 +9,7 @@ let tourSchema = new mongoose.Schema({
     cost: { type: mongoose.Schema.Types.Number, required: REQUIRED_VALIDATION_MESSAGE },
     image: { type: mongoose.Schema.Types.String, required: REQUIRED_VALIDATION_MESSAGE },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, },
+    posts: [{type: mongoose.Schema.Types.String}],
 })
 
 let Tour = mongoose.model('Tour', tourSchema)

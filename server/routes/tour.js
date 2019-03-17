@@ -2,6 +2,7 @@ const express = require('express');
 const authCheck = require('../config/auth-check');
 const Tour = require('../models/Tour');
 const User = require('../models/User');
+const Post = require('../models/Post');
 
 const router = new express.Router()
 
@@ -173,7 +174,7 @@ router.get('/details/:id', (req, res) => {
     Tour
         .findById(id)
         .populate('User')
-        .then(tour => {
+        .then(async (tour) => {
             if (!tour) {
                 const message = 'Tour not found.'
                 return res.status(200).json({
@@ -182,11 +183,14 @@ router.get('/details/:id', (req, res) => {
                 })
             }
 
+            let posts = await Post.find({ tourId: tour.id })
+
             return res.status(200).json({
                 success: true,
                 message: 'Tour details info.',
                 tour: tour,
                 createdBy: tour.createdBy,
+                posts: posts
             })
         })
         .catch((err) => {
