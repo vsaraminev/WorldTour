@@ -47,7 +47,7 @@ class Home extends Component {
             <div className="container">
                 <div className="space-top text">
                     <h2>Welcome to World Tour !</h2>
-                    {!this.state.isAuth && <p className='lead text-muted'>A lot of tours are now just a few clicks away. Register now and view details.</p>}
+                    {!this.state.isAuth &&<p className='lead text-muted'>Taking a Round the World Tour is becoming easier and more convenient than ever before!<br/> Register now and view details.</p>}
                 </div>
                 <TourList isAuth={this.state.isAuth} tours={this.state.tours} />
             </div>

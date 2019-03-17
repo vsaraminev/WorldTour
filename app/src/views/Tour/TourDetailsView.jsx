@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import TourService from '../../services/tour-service';
@@ -33,12 +33,11 @@ class TourDetailsView extends Component {
                 createdBy: result.createdBy,
                 posts: result.posts,
             })
-        }        
+        }
     }
 
     async updateState() {
         const id = this.props.match.params.id;
-        console.log(this.state)
         let result = await this.PostService.allByTour(id);
         if (result.posts) {
             result.posts.sort((a, b) => {
@@ -49,8 +48,6 @@ class TourDetailsView extends Component {
                 posts: result.posts
             })
         }
-        console.log(this.state)
-
     }
 
     async handleClickDelete() {
@@ -72,7 +69,7 @@ class TourDetailsView extends Component {
                 });
             }
         } else {
-            localStorage.setItem('message', 'You are not allowed for this operation!')
+            localStorage.setItem('message', 'You have no permission for this operation!')
             this.setState({
                 redirect: true,
             });
@@ -80,12 +77,11 @@ class TourDetailsView extends Component {
     }
 
     render() {
-        let redirectLink = `/user/details/${this.state.createdBy}`;
-    
+        const redirectLink = `/`;
         return (
             <div className="col s10 offset-s1">
                 {(!this.state.redirect) ? (
-                    <TourDetails {...this.state} {...this.props} handleClickStar={this.handleClickStar} updateState={this.updateState} />
+                    <TourDetails {...this.state} {...this.props} handleClickDelete={this.handleClickDelete} updateState={this.updateState} />
                 ) : (<Redirect to={redirectLink} />)}
             </div>
         )

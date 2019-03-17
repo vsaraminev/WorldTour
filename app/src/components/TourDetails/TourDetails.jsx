@@ -40,7 +40,7 @@ class TourDetails extends Component {
                         <hr />
                         <div className="btns">
                             {(isCreator || isAdmin) && <Link to={'/tour/edit/' + _id} ><button type="button" className="btn btn-warning left">Edit tour</button></Link>}
-                            {isAdmin && <a><button type="button" onClick={this.handleClickDelete} className="btn btn-danger right">Delete tour</button></a>}
+                            {isAdmin && <a href='/'><button type="button" onClick={this.props.handleClickDelete} className="btn btn-danger right">Delete tour</button></a>}
                         </div>
                     </div>
                 </div>

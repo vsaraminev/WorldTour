@@ -100,29 +100,15 @@ class PostCreate extends Component {
 
     render() {
         return (
-            <div className="col-md-12 ">
+            <div className="col s12">
                 <form onSubmit={this.handleSubmit}>
                     <div className="input-field col s12">
-                    <legend>Leave comment</legend>
+                        <legend>Leave a comment</legend>
                         <textarea style={{ minHeight: 80 + "px" }} className="input-field col s12 white" type="text" onChange={this.handleChange} name="content" id="content"></textarea>
-                        <span className="input-field col s12">
-                            <input type="submit" className='btn btn-primary' value="ADD COMMENT" />
-                        </span>
+                        <input type="submit" className='btn btn-primary' value="Submit comment" />
                     </div>
                 </form>
             </div>
-            // <div className="col-md-12">
-            //     <form onSubmit={this.handleSubmit}>
-            //         <legend>Leave comment</legend>
-            //         <div className="form-group">
-            //             <textarea style={{ minHeight: 80 + "px" }} className="input-field col s12 white" type="text" onChange={this.handleChange} name="content" id="content"></textarea>
-            //             <div className='red-text'>{this.state.errors.content}</div>
-            //         </div>
-            //         <span className="input-field col s12">
-            //         <input type="submit" className="btn btn-primary" value="Submit comment" />
-            //         </span>
-            //     </form>
-            // </div>
         );
     }
 }

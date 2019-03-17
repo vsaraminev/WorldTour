@@ -42,22 +42,6 @@ class TourService {
             return err;
         }
     }
-
-    async star(id) {
-        try {
-            return await requester.post(`/tour/star/${id}`);
-        } catch (err) {
-            return err;
-        }
-    }
-
-    async unstar(id) {
-        try {
-            return await requester.post(`/tour/unstar/${id}`);
-        } catch (err) {
-            return err;
-        }
-    }
 }
 
 export default TourService;

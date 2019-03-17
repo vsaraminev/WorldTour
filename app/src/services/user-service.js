@@ -17,16 +17,6 @@ class UserService {
             return err;
         }           
     }
-
-    async delete(obj) { 
-        console.log(obj)
-        let data = {id2: obj.id2} 
-        try {
-            return await requester.delete(`/user/delete/${obj.id}`, data); 
-        } catch(err) {
-            return err;
-        }           
-    }
 }
 
 export default UserService;

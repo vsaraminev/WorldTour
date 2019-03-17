@@ -78,7 +78,7 @@ router.post('/create', authCheck, async (req, res) => {
             })
             .catch((err) => {
                 console.log(err)
-                let message = 'Something went wrong :( Check the form for errors.'
+                const message = 'Something went wrong :( Check the form for errors.'
                 if (err.code === 11000) {
                     message = 'Tour with the given name already exists.'
                 }

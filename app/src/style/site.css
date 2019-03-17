@@ -19,6 +19,10 @@ a.nav-link.active {
   margin-left: 2em;
 }
 
+.space-left1 {
+  margin-left: 2em;
+}
+
 .navbar span {
     color: #bbbbbb;
 }
