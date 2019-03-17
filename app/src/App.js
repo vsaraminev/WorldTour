@@ -9,7 +9,7 @@ import Footer from './components/common/Footer/Footer'
 import Home from './components/Home/Home';
 import Create from './components/Create/Create';
 import EditTour from './components/EditTour/EditTour'
-import TourDetails from './components/TourDetails/TourDetails'; 
+import TourDetails from './views/Tour/TourDetailsView'; 
 import Profile from './components/Profile/Profile';
 import AllUsers from './components/Users/AllUsers';
 import NotFound from './components/common/NotFound/NotFound';
