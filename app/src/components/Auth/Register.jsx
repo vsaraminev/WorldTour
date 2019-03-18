@@ -112,7 +112,7 @@ class Register extends Component {
               />
               <Input
                 name='avatar'
-                type='password'
+                type='text'
                 value={this.state.avatar}
                 onchange={this.handleChange}
                 placeholder="Your Avatar here..."

@@ -6,7 +6,7 @@ import PostCard from '../Post/PostCard';
 class TourDetails extends Component {
     render() {
         const isAdmin = localStorage.getItem('isAdmin') === "true"
-        const isCreator = localStorage.getItem('username') === this.props.user;
+        const isCreator = this.props.createdBy === this.props.userId;
         const { title, country, description, cost, image, _id } = this.props.tour;
         return (
             <div>
